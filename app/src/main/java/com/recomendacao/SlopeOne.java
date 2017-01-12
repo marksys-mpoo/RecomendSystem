@@ -66,18 +66,20 @@ public class SlopeOne extends AppCompatActivity {
         printData(data);
         // then, I'm going to test it out...
         HashMap<ItemId,Float> user = new HashMap<ItemId,Float>();
-        System.out.println("Ok, now we predict...");
+        System.out.println(" ");
+        System.out.println("******* Ok, now we predict... *********");
         user.put(item5,0.4f);
-        System.out.println("Inputting...");
+        user.put(item2,0.6f);
+        System.out.println("Inputting... User Novo");
         print(user);
-        System.out.println("Getting...");
+        System.out.println("Getting...User Novo");
         print(predict(user));
-        //
+        System.out.println();
         user.put(item4,0.2f);
-        System.out.println("Inputting...");
-        print(user);
-        System.out.println("Getting...");
-        print(predict(user));
+        System.out.println("Inputting... User2");
+        print(user2);
+        System.out.println("Getting... User2");
+        print(predict(user2));
 
         /*
         System.out.println("Data= " + data);
@@ -162,10 +164,15 @@ public class SlopeOne extends AppCompatActivity {
 
 
     public void printData(Map<UserId,Map<ItemId,Float>> data) {
+        System.out.println(" ");
+        System.out.println("************ Votos Dados pelos Usuários *********");
         for(UserId user : data.keySet()) {
             System.out.println(user);
             print(data.get(user));
         }
+
+        System.out.println(" ");
+        System.out.println("************Matriz Diferença *********");
         for (int i=0; i<mAllItems.length; i++) {
             System.out.print("\n" + mAllItems[i] + ":");
             printMatrixes(mDiffMatrix.get(mAllItems[i]), mFreqMatrix.get(mAllItems[i]));
@@ -237,6 +244,7 @@ class ItemId  {
     public ItemId(String s) {
         content = s;
     }
+
     public int hashCode() { return content.hashCode();}
     public String toString() { return content; }
 }
