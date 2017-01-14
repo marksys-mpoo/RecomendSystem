@@ -172,9 +172,19 @@ public class SlopeOne extends AppCompatActivity {
         }
 
         System.out.println(" ");
-        System.out.println("************Matriz Diferença *********");
+        System.out.println("************ Matriz Diferença [Itens x (Média das diferenças dos votos e Frequências dos itens juntos) ] ************");
+        System.out.print("             |");
+        for (int g=0; g<mAllItems.length; g++) { // mAllItems[i]
+            System.out.format("%21s", mAllItems[g] + "       |");
+        }
+        System.out.println(" ");
+        System.out.print("             |");
+        for (int h=0; h<mAllItems.length; h++) { // mAllItems[i]
+            System.out.print("  Votos    Frequenc |");
+        }
+        System.out.println(" ");
         for (int i=0; i<mAllItems.length; i++) {
-            System.out.print("\n" + mAllItems[i] + ":");
+            System.out.print("\n" + mAllItems[i] + ":|");
             printMatrixes(mDiffMatrix.get(mAllItems[i]), mFreqMatrix.get(mAllItems[i]));
         }
     }
@@ -182,9 +192,9 @@ public class SlopeOne extends AppCompatActivity {
     private void printMatrixes(Map<ItemId,Float> ratings,
                                Map<ItemId,Integer> frequencies) {
         for (int j=0; j<mAllItems.length; j++) {
-            System.out.format("%10.3f", ratings.get(mAllItems[j]));
+            System.out.format("%10.3f", ratings.get(mAllItems[j]) );
             System.out.print(" ");
-            System.out.format("%10d", frequencies.get(mAllItems[j]));
+            System.out.format("%10s", frequencies.get(mAllItems[j]) + " |");
         }
         System.out.println();
     }
