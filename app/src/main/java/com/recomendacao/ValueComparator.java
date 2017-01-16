@@ -2,7 +2,6 @@ package com.recomendacao;
 
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Objects;
 
 class ValueComparator implements Comparator<Object> {
     Map<Produto, Float> base;

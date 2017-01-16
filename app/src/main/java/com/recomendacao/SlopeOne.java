@@ -7,9 +7,6 @@ package com.recomendacao;
 
 public class SlopeOne extends AppCompatActivity {
 
-    //SlopeOne collectionsTeste = new SlopeOne();
-
-    private Map<Usuario,Map<Produto,Float>> mData;
     private Map<Produto,Map<Produto,Float>> mDiffMatrix;
     private Map<Produto,Map<Produto,Integer>> mFreqMatrix;
 
@@ -20,9 +17,7 @@ public class SlopeOne extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slope_one);
 
-        // this is my data base
         Map<Usuario,Map<Produto,Float>> data = new HashMap<Usuario,Map<Produto,Float>>();
-        // items
         Produto item1 = new Produto("       candy");
         Produto item2 = new Produto("         dog");
         Produto item3 = new Produto("         cat");
@@ -32,13 +27,11 @@ public class SlopeOne extends AppCompatActivity {
 
         mAllItems = new Produto[]{item1, item2, item3, item4, item5, item6};
 
-        //I'm going to fill it in
         HashMap<Produto,Float> user1 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> user2 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> user3 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> user4 = new HashMap<Produto,Float>();
         mapeamento(data, item1, item2, item3, item4, item5, item6, user1, user2, user3, user4);
-
     }
 
     private void mapeamento(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item2, Produto item3, Produto item4, Produto item5, Produto item6, HashMap<Produto, Float> user1, HashMap<Produto, Float> user2, HashMap<Produto, Float> user3, HashMap<Produto, Float> user4) {
@@ -57,18 +50,14 @@ public class SlopeOne extends AppCompatActivity {
         user3.put(item4,0.1f);
         data.put(new Usuario("Jo"),user3);
         user4.put(item1,0.1f);
-        //user4.put(item2,0.4f);
-        //user4.put(item3,0.5f);
         user4.put(item4,1.0f);
         user4.put(item5,0.4f);
         data.put(new Usuario("StrangeJo"),user4);
         // next, I create my predictor engine
-        //SlopeOne so = new SlopeOne(data);
         buildDiffMatrix(data);
         System.out.println(" ");
         System.out.println(" --------------------  INÍCIO - EXECUÇÃO DO PROTÓTIPO --------------------");
         System.out.println("Here's the data I have accumulated...");
-        //so.printData();
         printData(data);
         // then, I'm going to test it out...
         System.out.println("Inputting... User2");
@@ -187,16 +176,7 @@ public class SlopeOne extends AppCompatActivity {
     }
 
     public static void printRecomendacao(Map<Produto,Float> user) {
-        Map<Float,Produto> mapSemOrdem = new HashMap<>();
-        Map<Produto, Float> mapSemOrdemCompare = new HashMap<>();
-        for (Produto j : user.keySet()) {
-            System.out.println(" TESTE2 "+ j+ " --> "+user.get(j).floatValue());
-            mapSemOrdem.put(user.get(j).floatValue(), j);
-            mapSemOrdemCompare.put(j, user.get(j).floatValue());
-        }
-        ordenar(mapSemOrdem);
-        ordenarSort(mapSemOrdem);
-        ordenarCompare(mapSemOrdemCompare);
+        ordenarCompare(user);
         System.out.println(" --------------------  FIM - EXECUÇÃO DO PROTÓTIPO --------------------");
         System.out.println(" ");
     }
@@ -212,55 +192,6 @@ public class SlopeOne extends AppCompatActivity {
         sorted_map.putAll(map);
         System.out.println("results: " + sorted_map);
         System.out.println(" ");
-
-    }
-
-    public static void ordenarSort(Map<Float,Produto> map) {
-        System.out.println(" ");
-        System.out.println("************ Produtos Ordenados pela Classificação (Usuário Logado) *********");
-        List<Combine> listCombinada = new ArrayList<Combine>();
-
-        for (Map.Entry<Float,Produto> value : map.entrySet()) {
-            Combine a = new Combine(value.getValue(), value.getKey());
-            listCombinada.add(a);
-        }
-        System.out.println(" ");
-        Collections.sort(listCombinada);
-        System.out.println("************ TESTES COMBINADA (Recomendação para o Usuário Logado) *********");
-        for (int i = 0; i < listCombinada.size(); i++) {
-            System.out.println(listCombinada.get(i));
-        }
-        System.out.println(" ");
-        /*
-        System.out.println(" ");
-        System.out.println("************ TESTES (Recomendação para o Usuário Logado) *********");
-        for (Produto s : listCombinada)
-        {
-            System.out.println("" + s);
-        }
-        System.out.println(" --------------------  TESTES - EXECUÇÃO DO PROTÓTIPO --------------------");
-        System.out.println(" ");*/
-
-    }
-
-    public static void ordenar(Map<Float,Produto> map) {
-        System.out.println(" ");
-        System.out.println("************ Produtos Ordenados pela Classificação (Usuário Logado) *********");
-        List<Produto> listProdutosRecomendados = new ArrayList<Produto>();
-        Map<Float,Produto> treeMap = new TreeMap<Float,Produto>(map);
-        for (Map.Entry<Float,Produto> entry : treeMap.entrySet() ) {
-            System.out.println("" + entry );
-            listProdutosRecomendados.add(entry.getValue());
-        }
-        Collections.reverse(listProdutosRecomendados);
-        System.out.println(" ");
-        System.out.println("************ Lista Decrescente de Produtos (Recomendação para o Usuário Logado) *********");
-        for (Produto s : listProdutosRecomendados)
-        {
-            System.out.println("" + s);
-        }
-        System.out.println(" ");
-
     }
 
     public void buildDiffMatrix(Map<Usuario,Map<Produto,Float>> data) {
@@ -297,4 +228,3 @@ public class SlopeOne extends AppCompatActivity {
 
     }
 }
-
