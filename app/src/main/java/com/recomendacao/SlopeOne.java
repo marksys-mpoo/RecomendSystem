@@ -7,10 +7,10 @@ package com.recomendacao;
 
 public class SlopeOne extends AppCompatActivity {
 
-    private Map<Produto,Map<Produto,Float>> mDiffMatrix;
-    private Map<Produto,Map<Produto,Integer>> mFreqMatrix;
+    private Map<Produto,Map<Produto,Float>> matrizDiferenca;
+    private Map<Produto,Map<Produto,Integer>> matrizFrequencia;
 
-    private static Produto[] mAllItems;
+    private static Produto[] todosItens;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -18,14 +18,14 @@ public class SlopeOne extends AppCompatActivity {
         setContentView(R.layout.activity_slope_one);
 
         Map<Usuario,Map<Produto,Float>> data = new HashMap<Usuario,Map<Produto,Float>>();
-        Produto item1 = new Produto("       candy");
-        Produto item2 = new Produto("         dog");
-        Produto item3 = new Produto("         cat");
-        Produto item4 = new Produto("         war");
-        Produto item5 = new Produto("strange food");
+        Produto item1 = new Produto("        maçã");
+        Produto item2 = new Produto("refrigerante");
+        Produto item3 = new Produto("       arroz");
+        Produto item4 = new Produto("       sabão");
+        Produto item5 = new Produto("creme dental");
         Produto item6 = new Produto("       leite");
 
-        mAllItems = new Produto[]{item1, item2, item3, item4, item5, item6};
+        todosItens = new Produto[]{item1, item2, item3, item4, item5, item6};
 
         HashMap<Produto,Float> user1 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> user2 = new HashMap<Produto,Float>();
@@ -38,30 +38,31 @@ public class SlopeOne extends AppCompatActivity {
         user1.put(item1,1.0f);
         user1.put(item2,0.5f);
         user1.put(item4,0.1f);
-        data.put(new Usuario("Bob"),user1);
+        data.put(new Usuario("João"),user1);
         user2.put(item1,1.0f);
         user2.put(item3,0.5f);
-        user2.put(item4,0.2f);
         user2.put(item6,0.3f);
-        data.put(new Usuario("Jane"),user2);
+        data.put(new Usuario("Maria"),user2);
         user3.put(item1,0.9f);
         user3.put(item2,0.4f);
         user3.put(item3,0.5f);
         user3.put(item4,0.1f);
-        data.put(new Usuario("Jo"),user3);
+        data.put(new Usuario("José"),user3);
         user4.put(item1,0.1f);
         user4.put(item4,1.0f);
         user4.put(item5,0.4f);
-        data.put(new Usuario("StrangeJo"),user4);
+        data.put(new Usuario("Ana"),user4);
         // next, I create my predictor engine
-        buildDiffMatrix(data);
+        criarMatrizDiferenca(data);
         System.out.println(" ");
         System.out.println(" --------------------  INÍCIO - EXECUÇÃO DO PROTÓTIPO --------------------");
         System.out.println("Here's the data I have accumulated...");
         printData(data);
         // then, I'm going to test it out...
+        System.out.println(" ");
         System.out.println("Inputting... User2");
         print(user2);
+        System.out.println(" ");
         System.out.println("Getting... User2");
         printRecomendacao(predict(user2));
     }
@@ -70,7 +71,7 @@ public class SlopeOne extends AppCompatActivity {
      * Based on existing data, and using weights,
      * try to predict all missing ratings.
      * The trick to make this more scalable is to consider
-     * only mDiffMatrix entries having a large  (>1) mFreqMatrix
+     * only matrizDiferenca entries having a large  (>1) matrizFrequencia
      * entry.
      *
      * It will output the prediction 0 when no prediction is possible.
@@ -78,16 +79,16 @@ public class SlopeOne extends AppCompatActivity {
     public Map<Produto,Float> predict(Map<Produto,Float> user) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
-        for (Produto j : mDiffMatrix.keySet()) {
+        for (Produto j : matrizDiferenca.keySet()) {
             frequencies.put(j,0);
             predictions.put(j,0.0f);
         }
         for (Produto j : user.keySet()) {
-            for (Produto k : mDiffMatrix.keySet()) {
+            for (Produto k : matrizDiferenca.keySet()) {
                 try {
-                    float newval = ( mDiffMatrix.get(k).get(j).floatValue() + user.get(j).floatValue() ) * mFreqMatrix.get(k).get(j).intValue();
+                    float newval = ( matrizDiferenca.get(k).get(j).floatValue() + user.get(j).floatValue() ) * matrizFrequencia.get(k).get(j).intValue();
                     predictions.put(k, predictions.get(k)+newval);
-                    frequencies.put(k, frequencies.get(k)+mFreqMatrix.get(k).get(j).intValue());
+                    frequencies.put(k, frequencies.get(k)+ matrizFrequencia.get(k).get(j).intValue());
                 } catch(NullPointerException e) {}
             }
         }
@@ -107,20 +108,20 @@ public class SlopeOne extends AppCompatActivity {
      * Based on existing data, and not using weights,
      * try to predict all missing ratings.
      * The trick to make this more scalable is to consider
-     * only mDiffMatrix entries having a large  (>1) mFreqMatrix
+     * only matrizDiferenca entries having a large  (>1) matrizFrequencia
      * entry.
      */
     public Map<Produto,Float> weightlesspredict(Map<Produto,Float> user) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
-        for (Produto j : mDiffMatrix.keySet()) {
+        for (Produto j : matrizDiferenca.keySet()) {
             predictions.put(j,0.0f);
             frequencies.put(j,0);
         }
         for (Produto j : user.keySet()) {
-            for (Produto k : mDiffMatrix.keySet()) {
-                //System.out.println("Average diff between "+j+" and "+ k + " is "+mDiffMatrix.get(k).get(j).floatValue()+" with n = "+mFreqMatrix.get(k).get(j).floatValue());
-                float newval = ( mDiffMatrix.get(k).get(j).floatValue() + user.get(j).floatValue() ) ;
+            for (Produto k : matrizDiferenca.keySet()) {
+                //System.out.println("Average diff between "+j+" and "+ k + " is "+matrizDiferenca.get(k).get(j).floatValue()+" with n = "+matrizFrequencia.get(k).get(j).floatValue());
+                float newval = ( matrizDiferenca.get(k).get(j).floatValue() + user.get(j).floatValue() ) ;
                 predictions.put(k, predictions.get(k)+newval);
             }
         }
@@ -144,27 +145,27 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
         System.out.println("************ Matriz Diferença [Itens x (Média das diferenças dos votos e Frequências dos itens juntos) ] ************");
         System.out.print("             |");
-        for (int g=0; g<mAllItems.length; g++) { // mAllItems[i]
-            System.out.format("%21s", mAllItems[g] + "       |");
+        for (int g = 0; g< todosItens.length; g++) { // todosItens[i]
+            System.out.format("%21s", todosItens[g] + "       |");
         }
         System.out.println(" ");
         System.out.print("             |");
-        for (int h=0; h<mAllItems.length; h++) { // mAllItems[i]
+        for (int h = 0; h< todosItens.length; h++) { // todosItens[i]
             System.out.print("  Votos    Frequenc |");
         }
         System.out.println(" ");
-        for (int i=0; i<mAllItems.length; i++) {
-            System.out.print("\n" + mAllItems[i] + ":|");
-            printMatrixes(mDiffMatrix.get(mAllItems[i]), mFreqMatrix.get(mAllItems[i]));
+        for (int i = 0; i< todosItens.length; i++) {
+            System.out.print("\n" + todosItens[i] + ":|");
+            printMatrizes(matrizDiferenca.get(todosItens[i]), matrizFrequencia.get(todosItens[i]));
         }
     }
 
-    private void printMatrixes(Map<Produto,Float> ratings,
+    private void printMatrizes(Map<Produto,Float> ratings,
                                Map<Produto,Integer> frequencies) {
-        for (int j=0; j<mAllItems.length; j++) {
-            System.out.format("%10.3f", ratings.get(mAllItems[j]) );
+        for (int j = 0; j< todosItens.length; j++) {
+            System.out.format("%10.3f", ratings.get(todosItens[j]) );
             System.out.print(" ");
-            System.out.format("%10s", frequencies.get(mAllItems[j]) + " |");
+            System.out.format("%10s", frequencies.get(todosItens[j]) + " |");
         }
         System.out.println();
     }
@@ -194,35 +195,35 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
     }
 
-    public void buildDiffMatrix(Map<Usuario,Map<Produto,Float>> data) {
-        mDiffMatrix = new HashMap<Produto, Map<Produto, Float>>();
-        mFreqMatrix = new HashMap<Produto, Map<Produto, Integer>>();
+    public void criarMatrizDiferenca(Map<Usuario,Map<Produto,Float>> data) {
+        matrizDiferenca = new HashMap<Produto, Map<Produto, Float>>();
+        matrizFrequencia = new HashMap<Produto, Map<Produto, Integer>>();
         // first iterate through users
         for (Map<Produto, Float> user : data.values()) {
             // then iterate through user data
             for (Map.Entry<Produto, Float> entry : user.entrySet()) {
-                if (!mDiffMatrix.containsKey(entry.getKey())) {
-                    mDiffMatrix.put(entry.getKey(), new HashMap<Produto, Float>());
-                    mFreqMatrix.put(entry.getKey(), new HashMap<Produto, Integer>());
+                if (!matrizDiferenca.containsKey(entry.getKey())) {
+                    matrizDiferenca.put(entry.getKey(), new HashMap<Produto, Float>());
+                    matrizFrequencia.put(entry.getKey(), new HashMap<Produto, Integer>());
                 }
                 for (Map.Entry<Produto, Float> entry2 : user.entrySet()) {
                     int oldcount = 0;
-                    if (mFreqMatrix.get(entry.getKey()).containsKey(entry2.getKey()))
-                        oldcount = mFreqMatrix.get(entry.getKey()).get(entry2.getKey()).intValue();
+                    if (matrizFrequencia.get(entry.getKey()).containsKey(entry2.getKey()))
+                        oldcount = matrizFrequencia.get(entry.getKey()).get(entry2.getKey()).intValue();
                     float olddiff = 0.0f;
-                    if (mDiffMatrix.get(entry.getKey()).containsKey(entry2.getKey()))
-                        olddiff = mDiffMatrix.get(entry.getKey()).get(entry2.getKey()).floatValue();
+                    if (matrizDiferenca.get(entry.getKey()).containsKey(entry2.getKey()))
+                        olddiff = matrizDiferenca.get(entry.getKey()).get(entry2.getKey()).floatValue();
                     float observeddiff = entry.getValue() - entry2.getValue();
-                    mFreqMatrix.get(entry.getKey()).put(entry2.getKey(), oldcount + 1);
-                    mDiffMatrix.get(entry.getKey()).put(entry2.getKey(), olddiff + observeddiff);
+                    matrizFrequencia.get(entry.getKey()).put(entry2.getKey(), oldcount + 1);
+                    matrizDiferenca.get(entry.getKey()).put(entry2.getKey(), olddiff + observeddiff);
                 }
             }
         }
-        for (Produto j : mDiffMatrix.keySet()) {
-            for (Produto i : mDiffMatrix.get(j).keySet()) {
-                float oldvalue = mDiffMatrix.get(j).get(i).floatValue();
-                int count = mFreqMatrix.get(j).get(i).intValue();
-                mDiffMatrix.get(j).put(i, oldvalue / count);
+        for (Produto j : matrizDiferenca.keySet()) {
+            for (Produto i : matrizDiferenca.get(j).keySet()) {
+                float oldvalue = matrizDiferenca.get(j).get(i).floatValue();
+                int count = matrizFrequencia.get(j).get(i).intValue();
+                matrizDiferenca.get(j).put(i, oldvalue / count);
             }
         }
 
