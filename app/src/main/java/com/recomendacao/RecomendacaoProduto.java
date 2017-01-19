@@ -1,6 +1,6 @@
 package com.recomendacao;
 
-public class Recomendacao {
+public class RecomendacaoProduto {
 
     private Usuario usuario;
     private Float classificacao;

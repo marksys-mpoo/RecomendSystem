@@ -52,30 +52,18 @@ public class SlopeOne extends AppCompatActivity {
         user4.put(item4,1.0f);
         user4.put(item5,0.4f);
         data.put(new Usuario("Ana"),user4);
-        // next, I create my predictor engine
         criarMatrizDiferenca(data);
         System.out.println(" ");
         System.out.println(" --------------------  INÍCIO - EXECUÇÃO DO PROTÓTIPO --------------------");
-        System.out.println("Here's the data I have accumulated...");
         printData(data);
-        // then, I'm going to test it out...
         System.out.println(" ");
-        System.out.println("Inputting... User2");
+        System.out.println("Lendo... User2 - Maria");
         print(user2);
         System.out.println(" ");
-        System.out.println("Getting... User2");
+        System.out.println("Calculando... User2 - Maria");
         printRecomendacao(predict(user2));
     }
 
-    /**
-     * Based on existing data, and using weights,
-     * try to predict all missing ratings.
-     * The trick to make this more scalable is to consider
-     * only matrizDiferenca entries having a large  (>1) matrizFrequencia
-     * entry.
-     *
-     * It will output the prediction 0 when no prediction is possible.
-     */
     public Map<Produto,Float> predict(Map<Produto,Float> user) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
@@ -104,13 +92,6 @@ public class SlopeOne extends AppCompatActivity {
         return cleanpredictions;
     }
 
-    /**
-     * Based on existing data, and not using weights,
-     * try to predict all missing ratings.
-     * The trick to make this more scalable is to consider
-     * only matrizDiferenca entries having a large  (>1) matrizFrequencia
-     * entry.
-     */
     public Map<Produto,Float> weightlesspredict(Map<Produto,Float> user) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
@@ -136,7 +117,7 @@ public class SlopeOne extends AppCompatActivity {
 
     public void printData(Map<Usuario,Map<Produto,Float>> data) {
         System.out.println(" ");
-        System.out.println("************ Votos Dados pelos Usuários *********");
+        System.out.println("************ Notas Dados pelos Usuários *********");
         for(Usuario user : data.keySet()) {
             System.out.println(user);
             print(data.get(user));
@@ -151,7 +132,7 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
         System.out.print("             |");
         for (int h = 0; h< todosItens.length; h++) { // todosItens[i]
-            System.out.print("  Votos    Frequenc |");
+            System.out.print("  Notas    Frequenc |");
         }
         System.out.println(" ");
         for (int i = 0; i< todosItens.length; i++) {
@@ -184,7 +165,7 @@ public class SlopeOne extends AppCompatActivity {
 
     public static void ordenarCompare(Map<Produto, Float> map) {
         System.out.println(" ");
-        System.out.println("************ ORDENA COMPARE (Usuário Logado) *********");
+        System.out.println("************ ORDENA COMPARE (User2 - Maria) *********");
 
         ValueComparator bvc = new ValueComparator(map);
         Map<Produto, Float> sorted_map = new TreeMap<Produto, Float>(bvc);

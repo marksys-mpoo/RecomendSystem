@@ -3,8 +3,7 @@ package com.recomendacao;
 class Produto {
 
     private String nome;
-
-    //private Recomendacao recomendacao;
+    private Supermercado supermercado;
 
     public Produto(String s) {
         nome = s;
@@ -16,16 +15,15 @@ class Produto {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-    /*
-    public Recomendacao getRecomendacao() {
-        return recomendacao;
+
+    public Supermercado getSupermercado() {
+        return supermercado;
+    }
+    public void setSupermercado(Supermercado supermercado) {
+        this.supermercado = supermercado;
     }
 
-    public void setRecomendacao(Recomendacao recomendacao) {
-        this.recomendacao = recomendacao;
-    } */
 }
