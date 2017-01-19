@@ -1,29 +1,36 @@
 package com.recomendacao;
 
+import java.util.List;
+
 class Usuario {
     private String nome;
-    private RecomendacaoProduto recomendacaoProduto;
-    private RecomendacaoSupermercado recomendacaoSupermercado;
-
+    private List<RecomendacaoSupermercado> recomendacaoSupermercadoList;
+    private List<RecomendacaoProduto> recomendacaoProdutoList;
 
     public Usuario(String s) {
         nome = s;
     }
-
     public int hashCode() { return nome.hashCode();}
     public String toString() { return nome; }
 
-    public RecomendacaoProduto getRecomendacaoProduto() {
-        return recomendacaoProduto;
+    public List<RecomendacaoProduto> getRecomendacaoProdutoList() {
+        return recomendacaoProdutoList;
     }
-    public void setRecomendacaoProduto(RecomendacaoProduto recomendacaoProduto) {
-        this.recomendacaoProduto = recomendacaoProduto;
+    public void setRecomendacaoProdutoList(List<RecomendacaoProduto> recomendacaoProdutoList) {
+        this.recomendacaoProdutoList = recomendacaoProdutoList;
     }
 
-    public RecomendacaoSupermercado getRecomendacaoSupermercado() {
-        return recomendacaoSupermercado;
+    public List<RecomendacaoSupermercado> getRecomendacaoSupermercadoList() {
+        return recomendacaoSupermercadoList;
     }
-    public void setRecomendacaoSupermercado(RecomendacaoSupermercado recomendacaoSupermercado) {
-        this.recomendacaoSupermercado = recomendacaoSupermercado;
+    public void setRecomendacaoSupermercadoList(List<RecomendacaoSupermercado> recomendacaoSupermercadoList) {
+        this.recomendacaoSupermercadoList = recomendacaoSupermercadoList;
     }
+
+
+
+
+
+
+
 }

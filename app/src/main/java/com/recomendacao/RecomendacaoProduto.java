@@ -3,7 +3,7 @@ package com.recomendacao;
 public class RecomendacaoProduto {
 
     private Usuario usuario;
-    private Float classificacao;
+    private Float nota;
 
     public Usuario getUsuario() {
         return usuario;
@@ -13,12 +13,12 @@ public class RecomendacaoProduto {
         this.usuario = usuario;
     }
 
-    public Float getClassificacao() {
-        return classificacao;
+    public Float getNota() {
+        return nota;
     }
 
-    public void setClassificacao(Float classificacao) {
-        this.classificacao = classificacao;
+    public void setNota(Float nota) {
+        this.nota = nota;
     }
 
 }
