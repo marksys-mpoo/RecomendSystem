@@ -9,7 +9,6 @@ class Produto {
         nome = s;
     }
 
-    public int hashCode() { return nome.hashCode();}
     public String toString() { return nome; }
 
     public String getNome() {

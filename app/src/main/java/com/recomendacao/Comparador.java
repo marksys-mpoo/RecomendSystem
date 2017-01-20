@@ -3,10 +3,10 @@ package com.recomendacao;
 import java.util.Comparator;
 import java.util.Map;
 
-class ValueComparator implements Comparator<Object> {
+class Comparador implements Comparator<Object> {
     Map<Produto, Float> base;
 
-    public ValueComparator(Map<Produto, Float> base) {
+    public Comparador(Map<Produto, Float> base) {
         this.base = base;
     }
 

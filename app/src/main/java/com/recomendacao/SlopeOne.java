@@ -171,7 +171,7 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
         System.out.println("************ ORDENA COMPARE (User2 - Maria) *********");
 
-        ValueComparator bvc = new ValueComparator(map);
+        Comparador bvc = new Comparador(map);
         Map<Produto, Float> sorted_map = new TreeMap<Produto, Float>(bvc);
 
         System.out.println("unsorted map: " + map);
