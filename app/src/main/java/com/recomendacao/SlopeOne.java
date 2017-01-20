@@ -11,72 +11,99 @@ public class SlopeOne extends AppCompatActivity {
 
     private static Produto[] todosItens;
 
+    Usuario ana, jose, maria, joao;
+
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slope_one);
 
+        ana = new Usuario("Ana");
+        jose = new Usuario("José");
+        maria = new Usuario("Maria");
+        joao = new Usuario("João");
+
         Map<Usuario,Map<Produto,Float>> data = new HashMap<Usuario,Map<Produto,Float>>();
+
         Produto item1 = new Produto("        maçã");
         Produto item2 = new Produto("refrigerante");
         Produto item3 = new Produto("       arroz");
         Produto item4 = new Produto("       sabão");
         Produto item5 = new Produto("creme dental");
         Produto item6 = new Produto("       leite");
-
         todosItens = new Produto[]{item1, item2, item3, item4, item5, item6};
 
-        HashMap<Produto,Float> user1 = new HashMap<Produto,Float>();
-        HashMap<Produto,Float> user2 = new HashMap<Produto,Float>();
-        HashMap<Produto,Float> user3 = new HashMap<Produto,Float>();
-        HashMap<Produto,Float> user4 = new HashMap<Produto,Float>();
-        mapeamento(data, item1, item2, item3, item4, item5, item6, user1, user2, user3, user4);
+        HashMap<Produto,Float> notasUsuario1 = new HashMap<Produto,Float>();
+        HashMap<Produto,Float> notasUsuario2 = new HashMap<Produto,Float>();
+        HashMap<Produto,Float> notasUsuario3 = new HashMap<Produto,Float>();
+        HashMap<Produto,Float> notasUsuario4 = new HashMap<Produto,Float>();
+
+        mapeamentoUser1(data, item1, item2, item4, notasUsuario1);
+        mapeamentoUser2(data, item1, item3, item6, notasUsuario2);
+        mapeamentoUser3(data, item1, item2, item3, item4, notasUsuario3);
+        mapeamentoUser4(data, item1, item4, item5, notasUsuario4);
+
+        calculaRecomendacoes(data, jose);
     }
 
-    private void mapeamento(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item2, Produto item3, Produto item4, Produto item5, Produto item6, HashMap<Produto, Float> user1, HashMap<Produto, Float> user2, HashMap<Produto, Float> user3, HashMap<Produto, Float> user4) {
-        user1.put(item1,1.0f);
-        user1.put(item2,0.5f);
-        user1.put(item4,0.1f);
-        data.put(new Usuario("João"),user1);
-        user2.put(item1,1.0f);
-        user2.put(item3,0.5f);
-        user2.put(item6,0.3f);
-        data.put(new Usuario("Maria"),user2);
-        user3.put(item1,0.9f);
-        user3.put(item2,0.4f);
-        user3.put(item3,0.5f);
-        user3.put(item4,0.1f);
-        data.put(new Usuario("José"),user3);
-        user4.put(item1,0.1f);
-        user4.put(item4,1.0f);
-        user4.put(item5,0.4f);
-        data.put(new Usuario("Ana"),user4);
+    private void calculaRecomendacoes(Map<Usuario,Map<Produto,Float>> data, Usuario usuario) {
         criarMatrizDiferenca(data);
         System.out.println(" ");
         System.out.println(" --------------------  INÍCIO - EXECUÇÃO DO PROTÓTIPO --------------------");
         printData(data);
         System.out.println(" ");
-        System.out.println("Lendo... User2 - Maria");
-        print(user2);
+        System.out.println("Lendo... " + usuario.toString());
+        print(data.get(usuario));
         System.out.println(" ");
-        System.out.println("Calculando PREDICT... User2 - Maria");
-        printRecomendacao(predict(user2));
+        System.out.println("Calculando PREDICT... " + usuario.toString());
+        printRecomendacao(predict(data.get(usuario)), usuario);
         System.out.println(" ");
-        System.out.println("Calculando WEIGHTLESSPREDICT... User2 - Maria");
-        printRecomendacao(weightlesspredict(user2));
+        System.out.println("Calculando WEIGHTLESSPREDICT... " + usuario.toString());
+        printRecomendacao(weightlesspredict(data.get(usuario)), usuario);
+        System.out.println(" --------------------  FIM - EXECUÇÃO DO PROTÓTIPO --------------------");
+        System.out.println(" ");
     }
 
-    public Map<Produto,Float> predict(Map<Produto,Float> user) {
+    private void mapeamentoUser4(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item4, Produto item5, HashMap<Produto, Float> notasUsuario4) {
+        notasUsuario4.put(item1,0.1f);
+        notasUsuario4.put(item4,1.0f);
+        notasUsuario4.put(item5,0.4f);
+        data.put(ana,notasUsuario4);
+    }
+
+    private void mapeamentoUser3(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item2, Produto item3, Produto item4, HashMap<Produto, Float> notasUsuario3) {
+        notasUsuario3.put(item1,0.9f);
+        notasUsuario3.put(item2,0.4f);
+        notasUsuario3.put(item3,0.5f);
+        notasUsuario3.put(item4,0.1f);
+        data.put(jose,notasUsuario3);
+    }
+
+    private void mapeamentoUser2(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item3, Produto item6, HashMap<Produto, Float> notasUsuario2) {
+        notasUsuario2.put(item1,1.0f);
+        notasUsuario2.put(item3,0.5f);
+        notasUsuario2.put(item6,0.3f);
+        data.put(maria,notasUsuario2);
+    }
+
+    private void mapeamentoUser1(Map<Usuario, Map<Produto, Float>> data, Produto item1, Produto item2, Produto item4, HashMap<Produto, Float> notasUsuario1) {
+        notasUsuario1.put(item1,1.0f);
+        notasUsuario1.put(item2,0.5f);
+        notasUsuario1.put(item4,0.1f);
+        data.put(joao,notasUsuario1);
+    }
+
+    public Map<Produto,Float> predict(Map<Produto,Float> notasUsuario) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
         for (Produto j : matrizDiferenca.keySet()) {
             frequencies.put(j,0);
             predictions.put(j,0.0f);
         }
-        for (Produto j : user.keySet()) {
+        for (Produto j : notasUsuario.keySet()) {
             for (Produto k : matrizDiferenca.keySet()) {
                 try {
-                    float newval = ( matrizDiferenca.get(k).get(j).floatValue() + user.get(j).floatValue() ) * matrizFrequencia.get(k).get(j).intValue();
+                    float newval = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) * matrizFrequencia.get(k).get(j).intValue();
                     predictions.put(k, predictions.get(k)+newval);
                     frequencies.put(k, frequencies.get(k)+ matrizFrequencia.get(k).get(j).intValue());
                 } catch(NullPointerException e) {}
@@ -88,33 +115,33 @@ public class SlopeOne extends AppCompatActivity {
                 cleanpredictions.put(j, predictions.get(j).floatValue()/frequencies.get(j).intValue());
             }
         }
-        for (Produto j : user.keySet()) {
-            cleanpredictions.put(j,user.get(j));
+        for (Produto j : notasUsuario.keySet()) {
+            cleanpredictions.put(j,notasUsuario.get(j));
         }
         return cleanpredictions;
     }
 
-    public Map<Produto,Float> weightlesspredict(Map<Produto,Float> user) {
+    public Map<Produto,Float> weightlesspredict(Map<Produto,Float> notasUsuario) {
         HashMap<Produto,Float> predictions = new HashMap<Produto,Float>();
         HashMap<Produto,Integer> frequencies = new HashMap<Produto,Integer>();
         for (Produto j : matrizDiferenca.keySet()) {
             predictions.put(j,0.0f);
             frequencies.put(j,0);
         }
-        for (Produto j : user.keySet()) {
+        for (Produto j : notasUsuario.keySet()) {
             for (Produto k : matrizDiferenca.keySet()) {
                 try {
                 //System.out.println("Average diff between "+j+" and "+ k + " is "+matrizDiferenca.get(k).get(j).floatValue()+" with n = "+matrizFrequencia.get(k).get(j).floatValue());
-                float newval = ( matrizDiferenca.get(k).get(j).floatValue() + user.get(j).floatValue() ) ;
+                float newval = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) ;
                 predictions.put(k, predictions.get(k)+newval);
                 } catch(NullPointerException e) {}
             }
         }
         for (Produto j : predictions.keySet()) {
-            predictions.put(j, predictions.get(j).floatValue()/user.size());
+            predictions.put(j, predictions.get(j).floatValue()/notasUsuario.size());
         }
-        for (Produto j : user.keySet()) {
-            predictions.put(j,user.get(j));
+        for (Produto j : notasUsuario.keySet()) {
+            predictions.put(j,notasUsuario.get(j));
         }
         return predictions;
     }
@@ -122,13 +149,13 @@ public class SlopeOne extends AppCompatActivity {
     public void printData(Map<Usuario,Map<Produto,Float>> data) {
         System.out.println(" ");
         System.out.println("************ Notas Dados pelos Usuários *********");
-        for(Usuario user : data.keySet()) {
-            System.out.println(user);
-            print(data.get(user));
+        for(Usuario usuario : data.keySet()) {
+            System.out.println(usuario);
+            print(data.get(usuario));
         }
 
         System.out.println(" ");
-        System.out.println("************ Matriz Diferença [Itens x (Média das diferenças dos votos e Frequências dos itens juntos) ] ************");
+        System.out.println("************ Matriz Diferença [Itens x (Média das diferenças das notas e Frequências dos itens juntos) ] ************");
         System.out.print("             |");
         for (int g = 0; g< todosItens.length; g++) { // todosItens[i]
             System.out.format("%21s", todosItens[g] + "       |");
@@ -145,31 +172,30 @@ public class SlopeOne extends AppCompatActivity {
         }
     }
 
-    private void printMatrizes(Map<Produto,Float> ratings,
+    private void printMatrizes(Map<Produto,Float> notas,
                                Map<Produto,Integer> frequencies) {
         for (int j = 0; j< todosItens.length; j++) {
-            System.out.format("%10.3f", ratings.get(todosItens[j]) );
+            System.out.format("%10.3f", notas.get(todosItens[j]) );
             System.out.print(" ");
             System.out.format("%10s", frequencies.get(todosItens[j]) + " |");
         }
         System.out.println();
     }
 
-    public static void print(Map<Produto,Float> user) {
-        for (Produto j : user.keySet()) {
-            System.out.println(" "+ j+ " --> "+user.get(j).floatValue());
+    public static void print(Map<Produto,Float> notasUsuario) {
+        for (Produto j : notasUsuario.keySet()) {
+            System.out.println(" "+ j+ " --> "+notasUsuario.get(j).floatValue());
         }
     }
 
-    public static void printRecomendacao(Map<Produto,Float> user) {
-        ordenarCompare(user);
-        System.out.println(" --------------------  FIM - EXECUÇÃO DO PROTÓTIPO --------------------");
+    public static void printRecomendacao(Map<Produto,Float> notasUsuario, Usuario usuario) {
+        ordenarCompare(notasUsuario, usuario);
         System.out.println(" ");
     }
 
-    public static void ordenarCompare(Map<Produto, Float> map) {
+    public static void ordenarCompare(Map<Produto, Float> map, Usuario usuario) {
         System.out.println(" ");
-        System.out.println("************ ORDENA COMPARE (User2 - Maria) *********");
+        System.out.println("************ ORDENA PELO COMPARADOR ( " + usuario.toString() + " ) *********");
 
         Comparador bvc = new Comparador(map);
         Map<Produto, Float> sorted_map = new TreeMap<Produto, Float>(bvc);
