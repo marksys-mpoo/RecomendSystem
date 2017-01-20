@@ -18,13 +18,14 @@ public class SlopeOne extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slope_one);
 
+        /** Início - Simulando a leitura dos dados do sistema para o cálculo das recomendações */
+        //Cração dos usuários
         ana = new Usuario("Ana");
         jose = new Usuario("José");
         maria = new Usuario("Maria");
         joao = new Usuario("João");
 
-        Map<Usuario,Map<Produto,Float>> data = new HashMap<Usuario,Map<Produto,Float>>();
-
+        //Criação dos Produtos
         Produto item1 = new Produto("        maçã");
         Produto item2 = new Produto("refrigerante");
         Produto item3 = new Produto("       arroz");
@@ -33,17 +34,21 @@ public class SlopeOne extends AppCompatActivity {
         Produto item6 = new Produto("       leite");
         todosItens = new Produto[]{item1, item2, item3, item4, item5, item6};
 
+        //Criação da lista de notas dadas pelos usuários aos produtos
         HashMap<Produto,Float> notasUsuario1 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> notasUsuario2 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> notasUsuario3 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> notasUsuario4 = new HashMap<Produto,Float>();
 
+        Map<Usuario,Map<Produto,Float>> data = new HashMap<Usuario,Map<Produto,Float>>();
+        //Mapeamento dos dados em geral
         mapeamentoUser1(data, item1, item2, item4, notasUsuario1);
         mapeamentoUser2(data, item1, item3, item6, notasUsuario2);
         mapeamentoUser3(data, item1, item2, item3, item4, notasUsuario3);
         mapeamentoUser4(data, item1, item4, item5, notasUsuario4);
+        /** Fim - Simulando a leitura dos dados do sistema para o cálculo das recomendações */
 
-        calculaRecomendacoes(data, jose);
+        calculaRecomendacoes(data, jose); // Supondo que jose é o Usuário Logado (neste caso)
     }
 
     private void calculaRecomendacoes(Map<Usuario,Map<Produto,Float>> data, Usuario usuario) {
