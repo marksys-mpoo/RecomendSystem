@@ -108,8 +108,8 @@ public class SlopeOne extends AppCompatActivity {
         for (Produto j : notasUsuario.keySet()) {
             for (Produto k : matrizDiferenca.keySet()) {
                 try {
-                    float newval = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) * matrizFrequencia.get(k).get(j).intValue();
-                    predictions.put(k, predictions.get(k)+newval);
+                    float novoValor = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) * matrizFrequencia.get(k).get(j).intValue();
+                    predictions.put(k, predictions.get(k)+novoValor);
                     frequencies.put(k, frequencies.get(k)+ matrizFrequencia.get(k).get(j).intValue());
                 } catch(NullPointerException e) {}
             }
@@ -137,8 +137,8 @@ public class SlopeOne extends AppCompatActivity {
             for (Produto k : matrizDiferenca.keySet()) {
                 try {
                 //System.out.println("Average diff between "+j+" and "+ k + " is "+matrizDiferenca.get(k).get(j).floatValue()+" with n = "+matrizFrequencia.get(k).get(j).floatValue());
-                float newval = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) ;
-                predictions.put(k, predictions.get(k)+newval);
+                float novoValor = ( matrizDiferenca.get(k).get(j).floatValue() + notasUsuario.get(j).floatValue() ) ;
+                predictions.put(k, predictions.get(k)+novoValor);
                 } catch(NullPointerException e) {}
             }
         }
@@ -202,8 +202,8 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
         System.out.println("************ ORDENA PELO COMPARADOR ( " + usuario.toString() + " ) *********");
 
-        Comparador bvc = new Comparador(map);
-        Map<Produto, Float> sorted_map = new TreeMap<Produto, Float>(bvc);
+        Comparador comparador = new Comparador(map);
+        Map<Produto, Float> sorted_map = new TreeMap<Produto, Float>(comparador);
 
         System.out.println("unsorted map: " + map);
         sorted_map.putAll(map);
