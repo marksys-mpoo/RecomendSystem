@@ -62,7 +62,6 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println(" ");
         System.out.println("Calculando PREDICT... " + usuario.toString());
         printRecomendacao(predict(data.get(usuario)), usuario);
-        System.out.println(" ");
         System.out.println("Calculando WEIGHTLESSPREDICT... " + usuario.toString());
         printRecomendacao(weightlesspredict(data.get(usuario)), usuario);
         System.out.println(" --------------------  FIM - EXECUÇÃO DO PROTÓTIPO --------------------");
@@ -153,7 +152,7 @@ public class SlopeOne extends AppCompatActivity {
 
     public void printData(Map<Usuario,Map<Produto,Float>> data) {
         System.out.println(" ");
-        System.out.println("************ Notas Dados pelos Usuários *********");
+        System.out.println("************ Notas Dadas pelos Usuários *********");
         for(Usuario usuario : data.keySet()) {
             System.out.println(usuario);
             print(data.get(usuario));
