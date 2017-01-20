@@ -2,7 +2,6 @@ package com.recomendacao;
 
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
-
         import java.util.*;
 
 public class SlopeOne extends AppCompatActivity {
@@ -60,8 +59,11 @@ public class SlopeOne extends AppCompatActivity {
         System.out.println("Lendo... User2 - Maria");
         print(user2);
         System.out.println(" ");
-        System.out.println("Calculando... User2 - Maria");
+        System.out.println("Calculando PREDICT... User2 - Maria");
         printRecomendacao(predict(user2));
+        System.out.println(" ");
+        System.out.println("Calculando WEIGHTLESSPREDICT... User2 - Maria");
+        printRecomendacao(weightlesspredict(user2));
     }
 
     public Map<Produto,Float> predict(Map<Produto,Float> user) {
@@ -101,9 +103,11 @@ public class SlopeOne extends AppCompatActivity {
         }
         for (Produto j : user.keySet()) {
             for (Produto k : matrizDiferenca.keySet()) {
+                try {
                 //System.out.println("Average diff between "+j+" and "+ k + " is "+matrizDiferenca.get(k).get(j).floatValue()+" with n = "+matrizFrequencia.get(k).get(j).floatValue());
                 float newval = ( matrizDiferenca.get(k).get(j).floatValue() + user.get(j).floatValue() ) ;
                 predictions.put(k, predictions.get(k)+newval);
+                } catch(NullPointerException e) {}
             }
         }
         for (Produto j : predictions.keySet()) {
