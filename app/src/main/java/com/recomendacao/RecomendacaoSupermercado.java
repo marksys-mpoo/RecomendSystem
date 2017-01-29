@@ -18,5 +18,4 @@ public class RecomendacaoSupermercado {
     public void setNota(Float nota) {
         this.nota = nota;
     }
-
 }

@@ -9,7 +9,7 @@ public class SlopeOne extends AppCompatActivity {
     private Map<Produto,Map<Produto,Float>> matrizDiferenca;
     private Map<Produto,Map<Produto,Integer>> matrizFrequencia;
 
-    private static Produto[] todosItens;
+    private static List<Produto> todosItens;
 
     Usuario ana, jose, maria, joao;
 
@@ -32,9 +32,15 @@ public class SlopeOne extends AppCompatActivity {
         Produto item4 = new Produto("       sabão");
         Produto item5 = new Produto("creme dental");
         Produto item6 = new Produto("       leite");
-        todosItens = new Produto[]{item1, item2, item3, item4, item5, item6};
+        todosItens = new ArrayList<>(); // ({item1, item2, item3, item4, item5, item6});
+        todosItens.add(item1);
+        todosItens.add(item2);
+        todosItens.add(item3);
+        todosItens.add(item4);
+        todosItens.add(item5);
+        todosItens.add(item6);
 
-        //Criação da lista de notas dadas pelos usuários aos produtos
+       //Criação da lista de notas dadas pelos usuários aos produtos
         HashMap<Produto,Float> notasUsuario1 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> notasUsuario2 = new HashMap<Produto,Float>();
         HashMap<Produto,Float> notasUsuario3 = new HashMap<Produto,Float>();
@@ -52,6 +58,7 @@ public class SlopeOne extends AppCompatActivity {
     }
 
     private void calculoPredicao(Map<Usuario, Map<Produto, Float>> data) {
+        System.out.println("****** todosItens ... " + todosItens.get(2).getNome());
         calculaRecomendacoes(data, ana); // Simulando o Usuário Logado
     }
 
@@ -161,31 +168,30 @@ public class SlopeOne extends AppCompatActivity {
             System.out.println(usuario);
             print(data.get(usuario));
         }
-
         System.out.println(" ");
         System.out.println("************ Matriz Diferença [Itens x (Média das diferenças das notas e Frequências dos itens juntos) ] ************");
         System.out.print("             |");
-        for (int g = 0; g< todosItens.length; g++) { // todosItens[i]
-            System.out.format("%21s", todosItens[g] + "       |");
+        for (int g = 0; g< todosItens.size(); g++) { // todosItens[i]
+            System.out.format("%21s", todosItens.get(g) + "       |");
         }
         System.out.println(" ");
         System.out.print("             |");
-        for (int h = 0; h< todosItens.length; h++) { // todosItens[i]
+        for (int h = 0; h< todosItens.size(); h++) { // todosItens[i]
             System.out.print("  Notas    Frequenc |");
         }
         System.out.println(" ");
-        for (int i = 0; i< todosItens.length; i++) {
-            System.out.print("\n" + todosItens[i] + ":|");
-            printMatrizes(matrizDiferenca.get(todosItens[i]), matrizFrequencia.get(todosItens[i]));
+        for (int i = 0; i< todosItens.size(); i++) {
+            System.out.print("\n" + todosItens.get(i) + ":|");
+            printMatrizes(matrizDiferenca.get(todosItens.get(i)), matrizFrequencia.get(todosItens.get(i)));
         }
     }
 
     private void printMatrizes(Map<Produto,Float> notas,
                                Map<Produto,Integer> frequencies) {
-        for (int j = 0; j< todosItens.length; j++) {
-            System.out.format("%10.3f", notas.get(todosItens[j]) );
+        for (int j = 0; j< todosItens.size(); j++) {
+            System.out.format("%10.3f", notas.get(todosItens.get(j)) );
             System.out.print(" ");
-            System.out.format("%10s", frequencies.get(todosItens[j]) + " |");
+            System.out.format("%10s", frequencies.get(todosItens.get(j)) + " |");
         }
         System.out.println();
     }
