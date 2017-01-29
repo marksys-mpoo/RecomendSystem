@@ -48,22 +48,26 @@ public class SlopeOne extends AppCompatActivity {
         mapeamentoUser4(data, item1, item4, item5, notasUsuario4);
         /** Fim - Simulando a leitura dos dados do sistema para o cálculo das recomendações */
 
-        calculaRecomendacoes(data, jose); // Supondo que jose é o Usuário Logado (neste caso)
+        calculoPredicao(data);
     }
 
-    private void calculaRecomendacoes(Map<Usuario,Map<Produto,Float>> data, Usuario usuario) {
+    private void calculoPredicao(Map<Usuario, Map<Produto, Float>> data) {
+        calculaRecomendacoes(data, ana); // Simulando o Usuário Logado
+    }
+
+    private void calculaRecomendacoes(Map<Usuario,Map<Produto,Float>> data, Usuario usuarioLogado) {
         criarMatrizDiferenca(data);
         System.out.println(" ");
         System.out.println(" --------------------  INÍCIO - EXECUÇÃO DO PROTÓTIPO --------------------");
         printData(data);
         System.out.println(" ");
-        System.out.println("Lendo... " + usuario.toString());
-        print(data.get(usuario));
+        System.out.println("Lendo... " + usuarioLogado.toString());
+        print(data.get(usuarioLogado));
         System.out.println(" ");
-        System.out.println("Calculando PREDICT... " + usuario.toString());
-        printRecomendacao(predict(data.get(usuario)), usuario);
-        System.out.println("Calculando WEIGHTLESSPREDICT... " + usuario.toString());
-        printRecomendacao(weightlesspredict(data.get(usuario)), usuario);
+        System.out.println("Calculando PREDICT... " + usuarioLogado.toString());
+        printRecomendacao(predict(data.get(usuarioLogado)), usuarioLogado);
+        System.out.println("Calculando WEIGHTLESSPREDICT... " + usuarioLogado.toString());
+        printRecomendacao(weightlesspredict(data.get(usuarioLogado)), usuarioLogado);
         System.out.println(" --------------------  FIM - EXECUÇÃO DO PROTÓTIPO --------------------");
         System.out.println(" ");
     }
