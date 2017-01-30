@@ -4,9 +4,9 @@ import java.util.Comparator;
 import java.util.Map;
 
 class Comparador implements Comparator<Object> {
-    Map<Produto, Float> base;
+    Map<Produto, Double> base;
 
-    public Comparador(Map<Produto, Float> base) {
+    public Comparador(Map<Produto, Double> base) {
         this.base = base;
     }
 
